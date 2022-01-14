@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import os
 import random
 
-from igrss2022.utils import get_visual_label_image
+from igrss2022.utils import get_visual_label_image, seg_color_str_map, get_label_arrangement
 
 
 def visual_seg_map():
@@ -53,7 +53,53 @@ def generate_visual_data():
             # break
 
 
+def plot_label_arrangement():
+    src_dir_path_nice = r'E:\临时文件夹\labeled_train_with_visual\Nice\UrbanAtlas'
+    src_filename_list_nice = os.listdir(src_dir_path_nice)
+    label_count_nice = np.array([0 for _ in seg_color_str_map])
+
+    for filename in src_filename_list_nice:
+        if filename.endswith('.tif'):
+            label_count_nice += get_label_arrangement(os.path.join(src_dir_path_nice, filename))
+            # break
+
+    plt.figure()
+    plt.bar(range(len(seg_color_str_map)), label_count_nice / np.sum(label_count_nice), color=seg_color_str_map)
+    for x in range(len(seg_color_str_map)):
+        plt.text(x, (label_count_nice / np.sum(label_count_nice))[x], round((label_count_nice / np.sum(label_count_nice))[x], 2), ha='center')
+    plt.title('nice urban atlas')
+    plt.show()
+
+    src_dir_path_saint = r'E:\临时文件夹\labeled_train_with_visual\Nantes_Saint-Nazaire\UrbanAtlas'
+    src_filename_list_saint = os.listdir(src_dir_path_saint)
+    label_count_saint = np.array([0 for _ in seg_color_str_map])
+
+    for filename in src_filename_list_saint:
+        if filename.endswith('.tif'):
+            label_count_saint += get_label_arrangement(os.path.join(src_dir_path_saint, filename))
+            # break
+
+    plt.figure()
+    plt.bar(range(len(seg_color_str_map)), label_count_saint / np.sum(label_count_saint), color=seg_color_str_map)
+    for x in range(len(seg_color_str_map)):
+        plt.text(x, (label_count_saint / np.sum(label_count_saint))[x], round((label_count_saint / np.sum(label_count_saint))[x], 2), ha='center')
+    plt.title('saint urban atlas')
+    plt.show()
+
+    label_count_all = label_count_nice / 1e4 + label_count_saint / 1e4
+
+    plt.figure()
+    plt.bar(range(len(seg_color_str_map)), label_count_all / np.sum(label_count_all), color=seg_color_str_map)
+    for x in range(len(seg_color_str_map)):
+        plt.text(x, (label_count_all / np.sum(label_count_all))[x], round((label_count_all / np.sum(label_count_all))[x], 2), ha='center')
+    plt.title('all urban atlas')
+    plt.show()
+
+
 if __name__ == '__main__':
+
+
+
 
 
     pass
